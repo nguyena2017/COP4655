@@ -5,4 +5,5 @@
     <string name="title_map">Map</string>
     <string name="title_history">Weather History</string>
     <string name="input">Enter city or zip code</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
