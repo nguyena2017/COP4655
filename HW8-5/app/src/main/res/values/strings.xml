@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_dashboard">Weather</string>
+    <string name="title_notifications">Map</string>
+    <string name="title_history">Weather History</string>
 </resources>

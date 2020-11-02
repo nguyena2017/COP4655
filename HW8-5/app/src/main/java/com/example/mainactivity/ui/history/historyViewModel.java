@@ -1,16 +1,16 @@
-package com.example.mainactivity.ui.notifications;
+package com.example.mainactivity.ui.history;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class historyViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public historyViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is weather fragment");
+        mText.setValue("This is history fragment");
     }
 
     public LiveData<String> getText() {
