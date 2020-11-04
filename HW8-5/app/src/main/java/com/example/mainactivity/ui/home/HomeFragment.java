@@ -39,7 +39,14 @@ public class HomeFragment extends Fragment {
                 main.search(location);
             }
         });
-        
+        Button GPS = root.findViewById(R.id.gps);
+        GPS.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MainActivity main = (MainActivity) getActivity();
+                main.GPS();
+            }
+        });
+
         return root;
     }
 

@@ -39,42 +39,45 @@ public class DashboardFragment extends Fragment {
         MainActivity main = (MainActivity) getActivity();
         String weather = main.transfer();
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        weatherInfo(root,weather);
+        return root;
+    }
+
+    public void weatherInfo(View root, String weather)
+    {
         if (weather == null)
         {
-            return root;
+            return;
         }
+        else {
+            try {
+                JSONObject response = new JSONObject(weather);
+                json_parse(response);
+            } catch (JSONException e) {
+                // Print out the throwable in case there is an error
+                e.printStackTrace();
+            }
 
-        try {
-            JSONObject response = new JSONObject(weather);
-            json_parse(response);
+            TextView textView = root.findViewById(R.id.textView3);
+            TextView textView2 = root.findViewById(R.id.textView4);
+            TextView textView3 = root.findViewById(R.id.textView5);
+            TextView textView4 = root.findViewById(R.id.textView7);
+            TextView textView5 = root.findViewById(R.id.textView9);
+            TextView textView6 = root.findViewById(R.id.textView11);
+            TextView textView7 = root.findViewById(R.id.textView13);
+            TextView textView8 = root.findViewById(R.id.textView15);
+            TextView textView9 = root.findViewById(R.id.textView16);
+
+            textView8.setText("Weather in " + name + ", " + country);
+            textView9.setText("Forecast right now: " + temp + "\u00B0F, " + description);
+            textView.setText(lon);
+            textView2.setText(lat);
+            textView3.setText(feels_like + "\u00B0F");
+            textView4.setText(pressure);
+            textView5.setText(humidity + "%");
+            textView6.setText(speed);
+            textView7.setText(all);
         }
-        catch (JSONException e)
-        {
-            // Print out the throwable in case there is an error
-            e.printStackTrace();
-        }
-
-        TextView textView = root.findViewById(R.id.textView3);
-        TextView textView2 = root.findViewById(R.id.textView4);
-        TextView textView3 = root.findViewById(R.id.textView5);
-        TextView textView4 =  root.findViewById(R.id.textView7);
-        TextView textView5 = root.findViewById(R.id.textView9);
-        TextView textView6 = root.findViewById(R.id.textView11);
-        TextView textView7 = root.findViewById(R.id.textView13);
-        TextView textView8 = root.findViewById(R.id.textView15);
-        TextView textView9 = root.findViewById(R.id.textView16);
-
-        textView8.setText("Weather in " + name + ", " + country);
-        textView9.setText("Forecast right now: " + temp + "\u00B0F, " + description);
-        textView.setText(lon);
-        textView2.setText(lat);
-        textView3.setText(feels_like + "\u00B0F");
-        textView4.setText(pressure);
-        textView5.setText(humidity + "%");
-        textView6.setText(speed);
-        textView7.setText(all);
-
-        return root;
     }
 
     public void json_parse(JSONObject response)
