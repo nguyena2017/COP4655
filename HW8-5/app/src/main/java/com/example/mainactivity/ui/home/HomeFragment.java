@@ -39,6 +39,7 @@ public class HomeFragment extends Fragment {
                 main.search(location);
             }
         });
+        
         return root;
     }
 

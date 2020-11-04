@@ -38,6 +38,11 @@ public class DashboardFragment extends Fragment {
     {
         MainActivity main = (MainActivity) getActivity();
         String weather = main.transfer();
+        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        if (weather == null)
+        {
+            return root;
+        }
 
         try {
             JSONObject response = new JSONObject(weather);
@@ -48,7 +53,7 @@ public class DashboardFragment extends Fragment {
             // Print out the throwable in case there is an error
             e.printStackTrace();
         }
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
         TextView textView = root.findViewById(R.id.textView3);
         TextView textView2 = root.findViewById(R.id.textView4);
         TextView textView3 = root.findViewById(R.id.textView5);
