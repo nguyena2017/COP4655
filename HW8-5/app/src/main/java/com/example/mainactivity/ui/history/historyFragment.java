@@ -20,8 +20,7 @@ public class historyFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        historyViewModel =
-                ViewModelProviders.of(this).get(historyViewModel.class);
+        historyViewModel = ViewModelProviders.of(this).get(historyViewModel.class);
         View root = inflater.inflate(R.layout.fragment_history, container, false);
         final TextView textView = root.findViewById(R.id.text_history);
         historyViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {

@@ -10,11 +10,13 @@
         android:id="@+id/tableLayout"
         android:layout_width="221dp"
         android:layout_height="148dp"
-        android:layout_marginBottom="380dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.65"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView16">
 
         <TableRow
             android:id="@+id/row1"
@@ -170,13 +172,13 @@
         android:id="@+id/textView15"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="84dp"
+        android:gravity="center"
         android:textColor="#000"
         android:textSize="20dp"
-        android:gravity="center"
         app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -184,12 +186,12 @@
         android:id="@+id/textView16"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
         android:textColor="#000"
         android:textSize="18dp"
-        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -197,11 +199,11 @@
         android:id="@+id/textView17"
         android:layout_width="match_parent"
         android:layout_height="73dp"
+        android:background="#808080"
+        android:gravity="center"
         android:text="OpenWeather"
         android:textColor="#000"
         android:textSize="24dp"
-        android:gravity="center"
-        android:background="#808080"
         app:layout_constraintBottom_toTopOf="@+id/textView15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

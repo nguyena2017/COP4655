@@ -2,6 +2,7 @@ package com.example.mainactivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,9 +13,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mainactivity.ui.dashboard.DashboardFragment;
+import com.example.mainactivity.ui.home.HomeFragment;
+import com.google.android.gms.maps.model.Dash;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -22,9 +27,11 @@ import androidx.navigation.ui.NavigationUI;
 
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
 
-    public static final String EXTRA_MESSAGE = "com.example.weather.MESSAGE";
+public class MainActivity extends AppCompatActivity {
+    public static final String EXTRA_MESSAGE = "com.example.mainactivity.MESSAGE";
+    String weather;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,14 +47,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
     }
 
-    // Does the function when the search button is clicked
-    public void search(View view)
+    public void search(String location)
     {
-        //Get the editText
-        EditText editText = (EditText) findViewById(R.id.location);
+        Log.d("LOG","hello " + location);
 
-        // Get the value from the EditText that the user inputted
-        String location = editText.getText().toString();
         String url = "";
 
         // Check to see if nothing been inputted
@@ -79,12 +82,9 @@ public class MainActivity extends AppCompatActivity {
         JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                        // Transfer the string information into MapActivity
-                        intent.putExtra(EXTRA_MESSAGE, response.toString());
-                        // Start the MapActivity
-                        startActivity(intent);
+                    public void onResponse(JSONObject response)
+                    {
+                        weather = response.toString();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -96,5 +96,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue.add(JSONRequest);
+    }
+
+    public String transfer()
+    {
+        return weather;
     }
 }
