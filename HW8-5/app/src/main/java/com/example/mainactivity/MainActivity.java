@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.content.pm.PackageManager;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final int REQ_CODE = 100;
 
+    TextToSpeech t1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,14 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+        t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    t1.setLanguage(Locale.UK);
+                }
+            }
+        });
     }
 
     public void search(String location)
@@ -183,5 +194,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
+    }
+
+    public void textToSpeech(String toSpeak)
+    {
+        Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
+        t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
     }
 }

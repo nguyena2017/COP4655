@@ -1,16 +1,21 @@
 package com.example.mainactivity.ui.dashboard;
 
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 import com.example.mainactivity.MainActivity;
 import com.example.mainactivity.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
 
@@ -33,6 +38,9 @@ public class DashboardFragment extends Fragment {
         String weather = main.transfer();
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         weatherInfo(root,weather);
+
+        main.textToSpeech("Weather Forecast in " + name + ", " + country + " " + description + " with a temperature of " + temp + "\u00B0F" );
+
         return root;
     }
 
