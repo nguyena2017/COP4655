@@ -5,16 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.example.mainactivity.MainActivity;
 import com.example.mainactivity.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,8 +75,6 @@ public class DashboardFragment extends Fragment {
 
     public void json_parse(JSONObject response)
     {
-        // Get all the textviews in order to put values into the textviews
-
         // Check to see if the JSONObject is not null
         try
         {

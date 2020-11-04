@@ -1,15 +1,13 @@
 package com.example.mainactivity.ui.home;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,14 +15,11 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.mainactivity.MainActivity;
 import com.example.mainactivity.R;
 
-import org.json.JSONObject;
 
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-
-
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -46,6 +41,16 @@ public class HomeFragment extends Fragment {
                 main.GPS();
             }
         });
+
+        ImageView speak = root.findViewById(R.id.speak);
+        speak.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MainActivity main = (MainActivity) getActivity();
+                main.speechToText();
+            }
+        });
+
+
 
         return root;
     }
