@@ -4,13 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.example.mainactivity.MainActivity;
 import com.example.mainactivity.R;
-import com.example.mainactivity.ui.dashboard.DashboardFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -23,10 +19,8 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileProvider;
 import com.google.android.gms.maps.model.UrlTileProvider;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -51,6 +45,7 @@ public class NotificationsFragment extends Fragment {
             e.printStackTrace();
         }
 
+        //Create the Google Maps with the overlay
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
@@ -60,6 +55,7 @@ public class NotificationsFragment extends Fragment {
                 {
                     return;
                 }
+                // Get the coordinate for the Google Map
                 try {
                     JSONObject response = new JSONObject(weather);
                     JSONObject coord  = response.getJSONObject("coord");
@@ -71,7 +67,9 @@ public class NotificationsFragment extends Fragment {
                     // Print out the throwable in case there is an error
                     e.printStackTrace();
                 }
-                TileProvider tileProvider = new UrlTileProvider(256, 256) {        @Override
+                // Weather overlay
+                TileProvider tileProvider = new UrlTileProvider(256, 256) {
+                    @Override
                 public URL getTileUrl(int x, int y, int zoom) {
 
                     String s = String.format("https://tile.openweathermap.org/map/temp_new/%d/%d/%d.png?appid=323a24aad0160f9b25ba1116381f995b", zoom, x, y);
@@ -104,7 +102,6 @@ public class NotificationsFragment extends Fragment {
 
             }
         });
-
         return root;
     }
 }

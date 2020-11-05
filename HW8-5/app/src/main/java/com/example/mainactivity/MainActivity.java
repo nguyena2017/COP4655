@@ -36,6 +36,7 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -43,6 +44,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.mainactivity.MESSAGE";
     String weather;
+    String weather1;
     // Used for location permission
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     // Used for location permission
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Using the search feature
     public void search(String location) {
         String url = "";
 
@@ -121,10 +124,18 @@ public class MainActivity extends AppCompatActivity {
         queue.add(JSONRequest);
     }
 
+    //Return the JSONObject String
     public String transfer() {
         return weather;
     }
 
+    //Return the JSONObject String
+    public String list() {
+        return weather1;
+    }
+
+
+    //Using GPS feature
     public void GPS() {
         // Checks to see if user gives permission to use their location
         try {
@@ -142,8 +153,6 @@ public class MainActivity extends AppCompatActivity {
         gps = new GPSTracker(MainActivity.this);
         double latitude = gps.getLatitude();
         double longitude = gps.getLongitude();
-
-        Log.d("LOG", "hello " + latitude);
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -185,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Used for the speech to text
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -199,9 +209,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Used for the text to speech
     public void textToSpeech(String toSpeak) {
         Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
         t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
     }
 
+
+
+    //For weather history
+    public void history1()
+    {
+
+        //Initialize the GPS
+        gps = new GPSTracker(MainActivity.this);
+        double latitude = gps.getLatitude();
+        double longitude = gps.getLongitude();
+
+        long ut1 = Instant.now().getEpochSecond();
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Using GPS coordinates for OpenWeather API
+        String url = "https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=" + String.valueOf(latitude) + "&lon=" + String.valueOf(longitude) + "&dt=" + String.valueOf(ut1) +"&appid=323a24aad0160f9b25ba1116381f995b";
+
+        // Request a JSONObject response from the provided URL.
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        weather = response.toString();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Display error
+                Toast.makeText(getApplicationContext(), "That didn't work", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(JSONRequest);
+    }
 }
