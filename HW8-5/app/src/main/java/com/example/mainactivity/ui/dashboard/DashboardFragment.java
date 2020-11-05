@@ -19,7 +19,6 @@ import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
     String lat;
     String lon;
     String description;

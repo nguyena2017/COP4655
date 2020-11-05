@@ -15,6 +15,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.maps.model.TileProvider;
+import com.google.android.gms.maps.model.UrlTileProvider;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -22,7 +30,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -64,13 +77,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void search(String location)
-    {
+    public void search(String location) {
         String url = "";
 
         // Check to see if nothing been inputted
-        if(location.equals(""))
-        {
+        if (location.equals("")) {
             // Do nothing if user inputs nothing
             return;
         }
@@ -78,8 +89,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         // Checks to if city has been inputted or a zip code by using parseDouble
-        try
-        {
+        try {
 
             double number = Double.parseDouble(location);
             // Using Zip Code for OpenWeather API
@@ -87,25 +97,23 @@ public class MainActivity extends AppCompatActivity {
 
         }
         // Catches if location can not be turned into double.
-        catch (NumberFormatException ex)
-        {
+        catch (NumberFormatException ex) {
             // Using city for OpenWeather API
-            url = "https://api.openweathermap.org/data/2.5/weather?q=" + location +"&appid=323a24aad0160f9b25ba1116381f995b";
+            url = "https://api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=323a24aad0160f9b25ba1116381f995b";
         }
 
         // Request a JSONObject response from the provided URL.
         JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response)
-                    {
+                    public void onResponse(JSONObject response) {
                         weather = response.toString();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Display error
-                Toast.makeText(getApplicationContext(),"That didn't work", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "That didn't work", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -113,18 +121,14 @@ public class MainActivity extends AppCompatActivity {
         queue.add(JSONRequest);
     }
 
-    public String transfer()
-    {
+    public String transfer() {
         return weather;
     }
 
-
-    public void GPS()
-    {
+    public void GPS() {
         // Checks to see if user gives permission to use their location
         try {
-            if (ActivityCompat.checkSelfPermission(this, mPermission) != PackageManager.PERMISSION_GRANTED)
-            {
+            if (ActivityCompat.checkSelfPermission(this, mPermission) != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this, new String[]{mPermission}, REQUEST_CODE_PERMISSION);
 
@@ -139,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         double latitude = gps.getLatitude();
         double longitude = gps.getLongitude();
 
-        Log.d("LOG","hello " + latitude);
+        Log.d("LOG", "hello " + latitude);
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -158,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Display error
-                Toast.makeText(getApplicationContext(),"That didn't work", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "That didn't work", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -166,8 +170,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(JSONRequest);
     }
 
-    public void speechToText()
-    {
+    public void speechToText() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -196,9 +199,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void textToSpeech(String toSpeak)
-    {
+    public void textToSpeech(String toSpeak) {
         Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
         t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
     }
+
 }

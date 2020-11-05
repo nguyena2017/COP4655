@@ -21,8 +21,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
 
     // Values for latitude and longitude to be used for Google Maps
-    private double latitude;
-    private double longitude;
+    private double latitude = -80;
+    private double longitude = 27;
 
     // Function to initialize the textviews and the Google Map
     @Override
@@ -32,7 +32,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
     /**
