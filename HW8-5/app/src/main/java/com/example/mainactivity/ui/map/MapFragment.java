@@ -1,4 +1,4 @@
-package com.example.mainactivity.ui.notifications;
+package com.example.mainactivity.ui.map;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class NotificationsFragment extends Fragment {
+public class MapFragment extends Fragment {
 
     private GoogleMap googleMap;
     private MapView mMapView;
@@ -33,7 +33,7 @@ public class NotificationsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        View root = inflater.inflate(R.layout.fragment_map, container, false);
 
         mMapView = (MapView) root.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);

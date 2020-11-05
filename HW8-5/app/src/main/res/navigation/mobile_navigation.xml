@@ -13,15 +13,15 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.mainactivity.ui.dashboard.DashboardFragment"
+        android:name="com.example.mainactivity.ui.weather.WeatherFragment"
         android:label="@string/title_weather"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.mainactivity.ui.notifications.NotificationsFragment"
+        android:name="com.example.mainactivity.ui.map.MapFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/navigation_history"

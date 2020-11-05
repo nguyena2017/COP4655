@@ -1,4 +1,4 @@
-package com.example.mainactivity.ui.dashboard;
+package com.example.mainactivity.ui.weather;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class DashboardFragment extends Fragment {
+public class WeatherFragment extends Fragment {
 
     String lat;
     String lon;
@@ -30,7 +30,7 @@ public class DashboardFragment extends Fragment {
     {
         MainActivity main = (MainActivity) getActivity();
         String weather = main.transfer();
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View root = inflater.inflate(R.layout.fragment_weather, container, false);
         weatherInfo(root,weather);
 
         main.textToSpeech("Weather Forecast in " + name + ", " + country + " " + description + " with a temperature of " + temp + "\u00B0F" );
