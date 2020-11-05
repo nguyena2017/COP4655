@@ -19,9 +19,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.maps.model.TileProvider;
+import com.google.android.gms.maps.model.UrlTileProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class NotificationsFragment extends Fragment {
 
@@ -64,6 +71,24 @@ public class NotificationsFragment extends Fragment {
                     // Print out the throwable in case there is an error
                     e.printStackTrace();
                 }
+                TileProvider tileProvider = new UrlTileProvider(256, 256) {        @Override
+                public URL getTileUrl(int x, int y, int zoom) {
+
+                    String s = String.format("https://tile.openweathermap.org/map/temp_new/%d/%d/%d.png?appid=323a24aad0160f9b25ba1116381f995b", zoom, x, y);
+                    if (!checkTileExists(x, y, zoom)) {
+                        return null;
+                    }            try {
+                        return new URL(s);
+                    } catch (MalformedURLException e) {
+                        throw new AssertionError(e);
+                    }
+                }
+                    private boolean checkTileExists(int x, int y, int zoom)
+                    {
+                        int minZoom = 12;
+                        int maxZoom = 16;            return (zoom >= minZoom && zoom <= maxZoom);
+                    }
+                };
 
                 googleMap = mMap;
 
@@ -75,6 +100,7 @@ public class NotificationsFragment extends Fragment {
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(location).zoom(12).build();
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
                 mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+                TileOverlay tileOverlay = googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(tileProvider));
 
             }
         });
