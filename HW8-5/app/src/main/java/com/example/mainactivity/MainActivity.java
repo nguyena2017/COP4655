@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.util.JsonReader;
 import android.util.Log;
 import android.content.pm.PackageManager;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mainactivity.ui.weather.WeatherFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE = 100;
 
     TextToSpeech t1;
+
+    double lon;
+    double lat;
 
 
 
@@ -130,13 +135,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Return the JSONObject String
-    public String transfer() {
-        return weather;
-    }
+    public String transfer()
+    {
 
-    //Return the JSONObject String
-    public String list() {
-        return weather1;
+        try {
+            JSONObject response = new JSONObject(weather);
+            JSONObject coord = response.getJSONObject("coord");
+            lon =  Double.parseDouble(coord.getString("lon"));
+            lat =  Double.parseDouble(coord.getString("lat"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return weather;
     }
 
     public String getHistory(int i)
@@ -237,8 +248,7 @@ public class MainActivity extends AppCompatActivity {
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
 
-            double lat = 80;
-            double lon = 20;
+            WeatherFragment weather = new WeatherFragment();
 
             //calls to 5 day forecast
             String url = "https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=" + lat + "&lon=" + lon + "&dt=" + ForecastDates + "&appid=d060d6e57dc799664ff999f59e6e9d9f";

@@ -37,13 +37,11 @@ public class historyFragment extends Fragment {
         lv = (ListView) root.findViewById(R.id.list);
         contactList = new ArrayList<>();
 
-
         MainActivity main = (MainActivity) getActivity();
-
-
 
         for(int i = 0; i < 5; i++)
         {
+            String date = "";
             String temp ="";
             String pressure ="";
             String humidity="";
@@ -53,11 +51,10 @@ public class historyFragment extends Fragment {
             try {
                 JSONObject response = new JSONObject(name);
 
-                //JSONArray weather = response.getJSONArray("weather");
-                //JSONObject index = weather.getJSONObject(0);
-                //description = index.getString("description");
-
                 JSONObject current = response.getJSONObject("current");
+                date = current.getString("dt");
+                long date_actual = Long.parseLong(date);
+                date = new java.text.SimpleDateFormat("MM/dd/yyyy").format(new java.util.Date (date_actual*1000));
                 temp = current.getString("temp");
                 Double temp_actual = Double.parseDouble(temp);
                 temp = String.valueOf(Math.round(((temp_actual - 273.15) * 9/5 + 32) * 100) / 100);
@@ -68,15 +65,13 @@ public class historyFragment extends Fragment {
 
                 speed = current.getString("wind_speed");
 
-                //name = response.getString("name");
-
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             HashMap<String, String> contact = new HashMap<>();
-            contact.put("date", "Day " + (i+1));
+            contact.put("date", date);
             contact.put("temp", "Temperature: " + temp);
             contact.put("pressure", "Pressure: " + pressure);
             contact.put("humidity", "Humidity: " + humidity);
@@ -88,7 +83,6 @@ public class historyFragment extends Fragment {
                 R.layout.list_items, new String[]{ "date", "temp","pressure", "humidity", "wind"},
                 new int[]{R.id.date, R.id.temp, R.id.pressure, R.id.humidity, R.id.wind});
         lv.setAdapter(adapter);
-
         return root;
     }
 
