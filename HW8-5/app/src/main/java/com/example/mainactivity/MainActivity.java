@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     double lat;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,13 +104,13 @@ public class MainActivity extends AppCompatActivity {
 
             double number = Double.parseDouble(location);
             // Using Zip Code for OpenWeather API
-            url = "https://api.openweathermap.org/data/2.5/weather?zip=" + location + "&appid=d060d6e57dc799664ff999f59e6e9d9f";
+            url = "https://api.openweathermap.org/data/2.5/weather?zip=" + location + "&appid=323a24aad0160f9b25ba1116381f995b";
 
         }
         // Catches if location can not be turned into double.
         catch (NumberFormatException ex) {
             // Using city for OpenWeather API
-            url = "https://api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=d060d6e57dc799664ff999f59e6e9d9f";
+            url = "https://api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=323a24aad0160f9b25ba1116381f995b";
         }
 
         // Request a JSONObject response from the provided URL.
@@ -131,18 +130,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue.add(JSONRequest);
-        history1();
+        history();
     }
 
     //Return the JSONObject String
-    public String transfer()
-    {
+    public String transfer() {
 
         try {
             JSONObject response = new JSONObject(weather);
             JSONObject coord = response.getJSONObject("coord");
-            lon =  Double.parseDouble(coord.getString("lon"));
-            lat =  Double.parseDouble(coord.getString("lat"));
+            lon = Double.parseDouble(coord.getString("lon"));
+            lat = Double.parseDouble(coord.getString("lat"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -150,8 +148,7 @@ public class MainActivity extends AppCompatActivity {
         return weather;
     }
 
-    public String getHistory(int i)
-    {
+    public String getHistory(int i) {
         return history.get(i);
     }
 
@@ -179,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         // Using GPS coordinates for OpenWeather API
-        String url = "https://api.openweathermap.org/data/2.5/weather?lat=" + String.valueOf(latitude) + "&lon=" + String.valueOf(longitude) + "&appid=d060d6e57dc799664ff999f59e6e9d9f";
+        String url = "https://api.openweathermap.org/data/2.5/weather?lat=" + String.valueOf(latitude) + "&lon=" + String.valueOf(longitude) + "&appid=323a24aad0160f9b25ba1116381f995b";
         Log.d("TAG", url);
         // Request a JSONObject response from the provided URL.
         JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -198,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue.add(JSONRequest);
-        history1();
+        history();
     }
 
     public void speechToText() {
@@ -238,12 +235,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //For weather history
-    public void history1() {
+    public void history() {
 
-        for (int i = 0; i < 5; i++)
-        {
-            LocalDate ForecastDatesCurrent = LocalDate.now();
-            long ForecastDates = ForecastDatesCurrent.atStartOfDay(ZoneOffset.UTC).toEpochSecond() - 86400 * i;
+        LocalDate current = LocalDate.now();
+        for (int i = 0; i < 5; i++) {
+
+            long past_date = current.atStartOfDay(ZoneOffset.UTC).toEpochSecond() - 86400 * i;
 
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
@@ -251,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             WeatherFragment weather = new WeatherFragment();
 
             //calls to 5 day forecast
-            String url = "https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=" + lat + "&lon=" + lon + "&dt=" + ForecastDates + "&appid=d060d6e57dc799664ff999f59e6e9d9f";
+            String url = "https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=" + lat + "&lon=" + lon + "&dt=" + past_date + "&appid=323a24aad0160f9b25ba1116381f995b";
 
             JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
@@ -269,5 +266,5 @@ public class MainActivity extends AppCompatActivity {
             queue.add(JSONRequest);
         }
     }
-    }
+}
 

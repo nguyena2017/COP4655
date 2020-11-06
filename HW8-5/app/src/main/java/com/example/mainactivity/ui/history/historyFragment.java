@@ -1,36 +1,25 @@
 package com.example.mainactivity.ui.history;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
 import com.example.mainactivity.MainActivity;
 import com.example.mainactivity.R;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class historyFragment extends Fragment {
 
     private ListView lv;
     ArrayList<HashMap<String, String>> contactList;
-    ArrayList<String> list_item = new ArrayList<String>();
-    ArrayList<JSONObject> test;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_history, container, false);
@@ -39,6 +28,7 @@ public class historyFragment extends Fragment {
 
         MainActivity main = (MainActivity) getActivity();
 
+        // Putting the weather info into a Hashmap
         for(int i = 0; i < 5; i++)
         {
             String date = "";
@@ -46,10 +36,21 @@ public class historyFragment extends Fragment {
             String pressure ="";
             String humidity="";
             String speed = "";
-            String name = main.getHistory(i);
-            Log.d("TAG", "hello" + name);
+            String day = "";
+
+            //Check to see if history variable has been initialized
             try {
-                JSONObject response = new JSONObject(name);
+                 day = main.getHistory(i);
+            }
+            //If the history variable has not been initialized, show blank screen
+            catch (IndexOutOfBoundsException ex)
+            {
+                return root;
+            }
+
+            try {
+                // Parsing the JSON for each day
+                JSONObject response = new JSONObject(day);
 
                 JSONObject current = response.getJSONObject("current");
                 date = current.getString("dt");
@@ -60,32 +61,29 @@ public class historyFragment extends Fragment {
                 temp = String.valueOf(Math.round(((temp_actual - 273.15) * 9/5 + 32) * 100) / 100);
                 pressure = current.getString("pressure");
                 humidity = current.getString("humidity");
-
-                Log.d("Tag", temp);
-
                 speed = current.getString("wind_speed");
 
 
+                //Catch any JSON exception
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            HashMap<String, String> contact = new HashMap<>();
-            contact.put("date", date);
-            contact.put("temp", "Temperature: " + temp);
-            contact.put("pressure", "Pressure: " + pressure);
-            contact.put("humidity", "Humidity: " + humidity);
-            contact.put("wind", "Wind Speed: " + speed);
+            //Putting into the hashmap
+            HashMap<String, String> weather = new HashMap<>();
+            weather.put("date", date);
+            weather.put("temp", "Temperature: " + temp + "\u00B0F");
+            weather.put("pressure", "Pressure: " + pressure);
+            weather.put("humidity", "Humidity: " + humidity + "%");
+            weather.put("wind", "Wind Speed: " + speed);
 
-            contactList.add(contact);
+            contactList.add(weather);
         }
+        //Putting the weather info from the days into a list view
         ListAdapter adapter = new SimpleAdapter(getActivity(), contactList,
                 R.layout.list_items, new String[]{ "date", "temp","pressure", "humidity", "wind"},
                 new int[]{R.id.date, R.id.temp, R.id.pressure, R.id.humidity, R.id.wind});
         lv.setAdapter(adapter);
         return root;
     }
-
-
-
 }

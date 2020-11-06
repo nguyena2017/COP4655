@@ -119,16 +119,4 @@ public class WeatherFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-    public String getLat()
-    {
-        return lat;
-    }
-
-    public String getLon()
-    {
-        return lon;
-    }
 }
-
-
