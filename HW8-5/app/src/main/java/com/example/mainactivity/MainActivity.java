@@ -37,14 +37,16 @@ import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "com.example.mainactivity.MESSAGE";
     String weather;
     String weather1;
+    ArrayList<String> history = new ArrayList<String>();
     // Used for location permission
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     // Used for location permission
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE = 100;
 
     TextToSpeech t1;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,13 +100,13 @@ public class MainActivity extends AppCompatActivity {
 
             double number = Double.parseDouble(location);
             // Using Zip Code for OpenWeather API
-            url = "https://api.openweathermap.org/data/2.5/weather?zip=" + location + "&appid=323a24aad0160f9b25ba1116381f995b";
+            url = "https://api.openweathermap.org/data/2.5/weather?zip=" + location + "&appid=d060d6e57dc799664ff999f59e6e9d9f";
 
         }
         // Catches if location can not be turned into double.
         catch (NumberFormatException ex) {
             // Using city for OpenWeather API
-            url = "https://api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=323a24aad0160f9b25ba1116381f995b";
+            url = "https://api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=d060d6e57dc799664ff999f59e6e9d9f";
         }
 
         // Request a JSONObject response from the provided URL.
@@ -122,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue.add(JSONRequest);
+        history1();
     }
 
     //Return the JSONObject String
@@ -132,6 +137,11 @@ public class MainActivity extends AppCompatActivity {
     //Return the JSONObject String
     public String list() {
         return weather1;
+    }
+
+    public String getHistory(int i)
+    {
+        return history.get(i);
     }
 
 
@@ -158,8 +168,8 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         // Using GPS coordinates for OpenWeather API
-        String url = "https://api.openweathermap.org/data/2.5/weather?lat=" + String.valueOf(latitude) + "&lon=" + String.valueOf(longitude) + "&appid=323a24aad0160f9b25ba1116381f995b";
-
+        String url = "https://api.openweathermap.org/data/2.5/weather?lat=" + String.valueOf(latitude) + "&lon=" + String.valueOf(longitude) + "&appid=d060d6e57dc799664ff999f59e6e9d9f";
+        Log.d("TAG", url);
         // Request a JSONObject response from the provided URL.
         JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -177,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue.add(JSONRequest);
+        history1();
     }
 
     public void speechToText() {
@@ -215,41 +226,38 @@ public class MainActivity extends AppCompatActivity {
         t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
     }
 
-
-
     //For weather history
-    public void history1()
-    {
+    public void history1() {
 
-        //Initialize the GPS
-        gps = new GPSTracker(MainActivity.this);
-        double latitude = gps.getLatitude();
-        double longitude = gps.getLongitude();
+        for (int i = 0; i < 5; i++)
+        {
+            LocalDate ForecastDatesCurrent = LocalDate.now();
+            long ForecastDates = ForecastDatesCurrent.atStartOfDay(ZoneOffset.UTC).toEpochSecond() - 86400 * i;
 
-        long ut1 = Instant.now().getEpochSecond();
+            // Instantiate the RequestQueue.
+            RequestQueue queue = Volley.newRequestQueue(this);
 
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
+            double lat = 80;
+            double lon = 20;
 
-        // Using GPS coordinates for OpenWeather API
-        String url = "https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=" + String.valueOf(latitude) + "&lon=" + String.valueOf(longitude) + "&dt=" + String.valueOf(ut1) +"&appid=323a24aad0160f9b25ba1116381f995b";
+            //calls to 5 day forecast
+            String url = "https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=" + lat + "&lon=" + lon + "&dt=" + ForecastDates + "&appid=d060d6e57dc799664ff999f59e6e9d9f";
 
-        // Request a JSONObject response from the provided URL.
-        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        weather = response.toString();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // Display error
-                Toast.makeText(getApplicationContext(), "That didn't work", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(JSONRequest);
+            JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            history.add(response.toString());
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //textView.setText("That didn't work!");
+                        }
+                    });
+            queue.add(JSONRequest);
+        }
     }
-}
+    }
+

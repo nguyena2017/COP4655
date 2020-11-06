@@ -1,6 +1,7 @@
 package com.example.mainactivity.ui.history;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,46 +16,82 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.mainactivity.MainActivity;
 import com.example.mainactivity.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class historyFragment extends Fragment {
 
     private ListView lv;
     ArrayList<HashMap<String, String>> contactList;
+    ArrayList<String> list_item = new ArrayList<String>();
+    ArrayList<JSONObject> test;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_history, container, false);
         lv = (ListView) root.findViewById(R.id.list);
         contactList = new ArrayList<>();
+
+
         MainActivity main = (MainActivity) getActivity();
-        String list = main.transfer();
-        try {
-            JSONObject jsonObj = new JSONObject(list);
-            JSONObject test = jsonObj.getJSONObject("main");
-            String temp = test.getString("temp");
-            String pressure = test.getString("pressure");
-            String humidity = test.getString("humidity");
-            ArrayList<String> weather = new ArrayList<String>();
+
+
+
+        for(int i = 0; i < 5; i++)
+        {
+            String temp ="";
+            String pressure ="";
+            String humidity="";
+            String speed = "";
+            String name = main.getHistory(i);
+            Log.d("TAG", "hello" + name);
+            try {
+                JSONObject response = new JSONObject(name);
+
+                //JSONArray weather = response.getJSONArray("weather");
+                //JSONObject index = weather.getJSONObject(0);
+                //description = index.getString("description");
+
+                JSONObject current = response.getJSONObject("current");
+                temp = current.getString("temp");
+                Double temp_actual = Double.parseDouble(temp);
+                temp = String.valueOf(Math.round(((temp_actual - 273.15) * 9/5 + 32) * 100) / 100);
+                pressure = current.getString("pressure");
+                humidity = current.getString("humidity");
+
+                Log.d("Tag", temp);
+
+                speed = current.getString("wind_speed");
+
+                //name = response.getString("name");
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             HashMap<String, String> contact = new HashMap<>();
-
-            contact.put("temp", temp);
-            contact.put("pressure", pressure);
-            //contact.put("humidity",humidity);
-
+            contact.put("date", "Day " + (i+1));
+            contact.put("temp", "Temperature: " + temp);
+            contact.put("pressure", "Pressure: " + pressure);
+            contact.put("humidity", "Humidity: " + humidity);
+            contact.put("wind", "Wind Speed: " + speed);
 
             contactList.add(contact);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+        ListAdapter adapter = new SimpleAdapter(getActivity(), contactList,
+                R.layout.list_items, new String[]{ "date", "temp","pressure", "humidity", "wind"},
+                new int[]{R.id.date, R.id.temp, R.id.pressure, R.id.humidity, R.id.wind});
+        lv.setAdapter(adapter);
+
         return root;
     }
 
-    protected void onPostExecute(Void result) {
 
-    }
+
 }
