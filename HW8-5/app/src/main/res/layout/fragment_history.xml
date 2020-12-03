@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.history.historyFragment">
 
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:background="#808080"
+        android:gravity="center"
+        android:text="Andy Nguyen: Z23426709"
+        android:textColor="#000"
+        />
+
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
