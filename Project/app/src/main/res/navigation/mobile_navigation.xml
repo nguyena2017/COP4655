@@ -13,13 +13,20 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.project.ui.dashboard.DashboardFragment"
+        android:name="com.example.project.ui.search.SearchFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.project.ui.notifications.NotificationsFragment"
+        android:name="com.example.project.ui.map.MapFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.example.project.ui.favorite.FavoriteFragment"
+        android:label="@string/title_favorite"
+        tools:layout="@layout/fragment_favorite" />
+
 </navigation>
