@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "179899328689",
+    "project_id": "myyelp-10619",
+    "storage_bucket": "myyelp-10619.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179899328689:android:0fbc0bd3f867f0e41a5a90",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179899328689-9rf2rj3k862bc4es64metlmgap9bmekh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb1iZT3evsxmOSMcKt3ks35_LNaChZX3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179899328689-9rf2rj3k862bc4es64metlmgap9bmekh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
