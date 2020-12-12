@@ -164,13 +164,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void search()
+    public void search(String location)
     {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String YourUrl = "https://api.yelp.com/v3/businesses/search/food";
+        String YourUrl = "https://api.yelp.com/v3/businesses/search?location="+location;
         StringRequest request = new StringRequest(Request.Method.GET, YourUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d(TAG, response);
                 System.out.println(response);
             }
         }, new Response.ErrorListener() {
