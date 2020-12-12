@@ -7,6 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,6 +37,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -37,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     SignInButton signInButton;
     Button signOutButton;
+    String ACCESS_TOKEN = "ma4Uvju8RyzHlMDuVvqdxooupxz7_IkhbKpEek9HAzcGvu868nQhbkkDi_kk-FUb9_aWodrCEUJg-XiAPsTRYGTbmug2yhI0f0bBHwX7FnFBOoldEukhvNR75QzUX3Yx";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,5 +162,31 @@ public class MainActivity extends AppCompatActivity {
             signInButton.setVisibility(View.INVISIBLE);
         }
 
+    }
+
+    public void search()
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String YourUrl = "https://api.yelp.com/v3/businesses/search/food";
+        StringRequest request = new StringRequest(Request.Method.GET, YourUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+            }
+        }) {
+            //This is for Headers If You Needed
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization","bearer " + ACCESS_TOKEN);
+                return params;
+            }
+        };
+        queue.add(request);
     }
 }
