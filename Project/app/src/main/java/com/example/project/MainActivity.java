@@ -37,6 +37,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     public GoogleSignInClient mGoogleSignInClient;
     public GoogleSignInAccount account;
     String ACCESS_TOKEN = "ma4Uvju8RyzHlMDuVvqdxooupxz7_IkhbKpEek9HAzcGvu868nQhbkkDi_kk-FUb9_aWodrCEUJg-XiAPsTRYGTbmug2yhI0f0bBHwX7FnFBOoldEukhvNR75QzUX3Yx";
+    Company company = new Company();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,15 +151,19 @@ public class MainActivity extends AppCompatActivity {
     {
         RequestQueue queue = Volley.newRequestQueue(this);
         String YourUrl = "https://api.yelp.com/v3/businesses/search?location="+location;
-        StringRequest request = new StringRequest(Request.Method.GET, YourUrl, new Response.Listener<String>() {
+        Log.d(TAG, YourUrl);
+        final StringRequest request = new StringRequest(Request.Method.GET, YourUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, response);
                 System.out.println(response);
+                company.add(response);
+                company = getCompany();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Failed");
                 System.out.println(error);
             }
         }) {
@@ -167,5 +176,10 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         queue.add(request);
+    }
+
+    public Company getCompany()
+    {
+        return company;
     }
 }

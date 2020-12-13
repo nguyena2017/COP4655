@@ -9,31 +9,35 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHolder>
 {
 
     Context context;
-    String[] nameList;
-    String[] descriptionList;
-
+    ArrayList<String> nameList;
+    ArrayList<String> addressList;
+    ArrayList<String> phoneList;
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView rowName;
-        TextView rowDescription;
+        TextView rowAddress;
+        TextView rowPhone;
         public ViewHolder (@NonNull View itemView)
         {
             super(itemView);
-            rowName = itemView.findViewById(R.id.title);
-            rowDescription = itemView.findViewById(R.id.description);
+            rowName = itemView.findViewById(R.id.name);
+            rowAddress = itemView.findViewById(R.id.address);
+            rowPhone = itemView.findViewById(R.id.phone);
         }
     }
 
-    public ProgramAdapter(Context context, String[] programNameList, String[] programDescriptionLIst)
+    public ProgramAdapter(Context context, ArrayList<String> nameList , ArrayList<String> addressList, ArrayList<String> phoneList)
     {
         this.context = context;
-        nameList = programNameList;
-        descriptionList = programDescriptionLIst;
-
+        this.nameList = nameList;
+        this.addressList = addressList;
+        this.phoneList = phoneList;
     }
 
     @NonNull
@@ -49,12 +53,14 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ProgramAdapter.ViewHolder holder, int position)
     {
-        holder.rowName.setText(nameList[position]);
-        holder.rowDescription.setText(descriptionList[position]);
+        holder.rowName.setText(nameList.get(position));
+        holder.rowAddress.setText(addressList.get(position));
+        holder.rowPhone.setText(phoneList.get(position));
     }
 
     @Override
-    public int getItemCount() {
-        return nameList.length;
+    public int getItemCount()
+    {
+        return nameList.size();
     }
 }

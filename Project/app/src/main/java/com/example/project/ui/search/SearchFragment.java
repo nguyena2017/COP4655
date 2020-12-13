@@ -17,39 +17,53 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.project.Company;
 import com.example.project.MainActivity;
 import com.example.project.ProgramAdapter;
 import com.example.project.R;
+
+import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
 
     RecyclerView recyclerView;
     RecyclerView.Adapter recycleAdapter;
     RecyclerView.LayoutManager layoutManager;
-    String[] title = {"Wen", "Hel"};
-    String[] description = {"This", "Sucks"};
+    ArrayList<String> name = new ArrayList<String>();
+    ArrayList<String> address = new ArrayList<String>();
+    ArrayList<String> phone = new ArrayList<String>();
     String TAG = "SearchFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_search, container, false);
+
         recyclerView = root.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        recycleAdapter = new ProgramAdapter(getActivity(), title, description);
-        recyclerView.setAdapter(recycleAdapter);
+
         final EditText search = root.findViewById(R.id.search);
         Button location_button = root.findViewById(R.id.location_button);
 
         location_button.setOnClickListener(new View.OnClickListener()
         {
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 //Get the text from the textfield
                 String location = search.getText().toString();
                 MainActivity main = (MainActivity) getActivity();
                 main.search(location);
+                Company company = main.getCompany();
+
+                name = company.name;
+                address = company.address;
+                phone = company.phone;
+
+                recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone);
+                recyclerView.setAdapter(recycleAdapter);
             }
+
         });
         return root;
     }

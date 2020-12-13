@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:text="Picture here"
         android:textSize="20dp"
-        android:layout_margin="25dp"
+        android:layout_margin="10dp"
         android:id="@+id/picture"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,16 +17,51 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"
+            android:text="Name"
             android:textSize="20dp"
-            android:id="@+id/title"/>
+            android:id="@+id/name"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rating"
+            android:textSize="20dp"
+            android:id="@+id/rating"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description"
-        android:textSize="20dp"
-        android:id="@+id/description"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone"
+            android:textSize="20dp"
+            android:id="@+id/phone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textSize="20dp"
+            android:id="@+id/address"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open"
+            android:textSize="20dp"
+            android:id="@+id/open"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Distance"
+            android:textSize="20dp"
+            android:id="@+id/distance"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Favorite"
+            android:id="@+id/favorite"/>
+
+
     </LinearLayout>
 
 </LinearLayout>
