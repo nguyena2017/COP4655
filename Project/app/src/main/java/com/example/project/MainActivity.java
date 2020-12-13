@@ -45,9 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static String TAG = "MainActivity";
     private static int RC_SIGN_IN = 1;
-    private GoogleSignInClient mGoogleSignInClient;
-    SignInButton signInButton;
-    Button signOutButton;
+    public GoogleSignInClient mGoogleSignInClient;
+    public GoogleSignInAccount account;
     String ACCESS_TOKEN = "ma4Uvju8RyzHlMDuVvqdxooupxz7_IkhbKpEek9HAzcGvu868nQhbkkDi_kk-FUb9_aWodrCEUJg-XiAPsTRYGTbmug2yhI0f0bBHwX7FnFBOoldEukhvNR75QzUX3Yx";
 
     @Override
@@ -64,10 +63,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-
-        signInButton = findViewById(R.id.login);
-        signOutButton = findViewById(R.id.signout);
-        signOutButton.setVisibility(View.INVISIBLE);
         mAuth = FirebaseAuth.getInstance();
 
         // Configure Google Sign In
@@ -80,23 +75,8 @@ public class MainActivity extends AppCompatActivity {
         // ...
         // Initialize Firebase Auth
 
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGoogleSignInClient.signOut();
-                signOutButton.setVisibility(View.INVISIBLE);
-                signInButton.setVisibility(View.VISIBLE);
-            }
-        });
     }
-    private void signIn() {
+    public void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -151,17 +131,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void updateUI(FirebaseUser user)
     {
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if(account != null)
         {
             String name = account.getDisplayName();
             Toast.makeText(MainActivity.this, name, Toast.LENGTH_SHORT).show();
-            signOutButton.setVisibility(View.VISIBLE);
-            signInButton.setVisibility(View.INVISIBLE);
         }
-
     }
 
     public void search(String location)
