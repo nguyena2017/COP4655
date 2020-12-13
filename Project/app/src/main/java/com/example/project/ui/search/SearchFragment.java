@@ -51,6 +51,7 @@ public class SearchFragment extends Fragment {
         final EditText search = root.findViewById(R.id.search);
         Button location_button = root.findViewById(R.id.location_button);
         Button gps_button = root.findViewById(R.id.gps_button);
+
         location_button.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -66,7 +67,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        location_button.setOnClickListener(new View.OnClickListener()
+        gps_button.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
@@ -74,6 +75,10 @@ public class SearchFragment extends Fragment {
             {
                 MainActivity main = (MainActivity) getActivity();
                 main.GPS();
+                Company company = main.getCompany();
+                recycleAdapter = new ProgramAdapter(getActivity(), company.name, company.address,
+                        company.phone, company.is_closed, company.distance, company.rating, company.city);
+                recyclerView.setAdapter(recycleAdapter);
             }
         });
         //recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);

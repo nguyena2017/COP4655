@@ -139,8 +139,6 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Signed in with credential Failed", Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
-
-                        // ...
                     }
                 });
     }
@@ -157,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void search(String location)
     {
+
         RequestQueue queue = Volley.newRequestQueue(this);
         String URL = "https://api.yelp.com/v3/businesses/search?location="+location + "+term=";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
@@ -205,7 +204,8 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
 
         // Using GPS coordinates for OpenWeather API
-        String url = "https://api.yelp.com/v3/businesses/search?latitude=" + Double.toString(latitude) + "+longitude=" + Double.toString(longitude) + "+term=";
+        String url = "https://api.yelp.com/v3/businesses/search?location=" + Double.toString(latitude) + "," + Double.toString(longitude);
+        Log.d(TAG, url);
         // Request a JSONObject response from the provided URL.
         JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -220,7 +220,16 @@ public class MainActivity extends AppCompatActivity {
                 // Display error
                 Toast.makeText(getApplicationContext(), "That didn't work", Toast.LENGTH_LONG).show();
             }
-        });
+        })
+        {
+            //This is for Headers If You Needed
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization","bearer " + ACCESS_TOKEN);
+                return params;
+            }
+        };
 
         // Add the request to the RequestQueue.
         queue.add(JSONRequest);
