@@ -1,6 +1,8 @@
 package com.example.project;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +35,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -53,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
     public GoogleSignInAccount account;
     String ACCESS_TOKEN = "ma4Uvju8RyzHlMDuVvqdxooupxz7_IkhbKpEek9HAzcGvu868nQhbkkDi_kk-FUb9_aWodrCEUJg-XiAPsTRYGTbmug2yhI0f0bBHwX7FnFBOoldEukhvNR75QzUX3Yx";
     Company company = new Company();
+    String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final int REQUEST_CODE_PERMISSION = 2;
+    GPSTracker gps;
 
 
 
@@ -152,9 +158,8 @@ public class MainActivity extends AppCompatActivity {
     public void search(String location)
     {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String YourUrl = "https://api.yelp.com/v3/businesses/search?location="+location + "+term=";
-        Log.d(TAG, YourUrl);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, YourUrl, null, new Response.Listener<JSONObject>() {
+        String URL = "https://api.yelp.com/v3/businesses/search?location="+location + "+term=";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 company.add(response.toString());
@@ -175,6 +180,50 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         queue.add(request);
+    }
+
+    public void GPS()
+    {
+        // Checks to see if user gives permission to use their location
+        try {
+            if (ActivityCompat.checkSelfPermission(this, mPermission) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{mPermission}, REQUEST_CODE_PERMISSION);
+
+                // If any permission above not allowed by user, this condition will execute every time, else your else part will work
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Initialize the GPS
+        gps = new GPSTracker(MainActivity.this);
+        double latitude = gps.getLatitude();
+        double longitude = gps.getLongitude();
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Using GPS coordinates for OpenWeather API
+        String url = "https://api.yelp.com/v3/businesses/search?latitude=" + Double.toString(latitude) + "+longitude=" + Double.toString(longitude) + "+term=";
+        // Request a JSONObject response from the provided URL.
+        JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        company.add(response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Display error
+                Toast.makeText(getApplicationContext(), "That didn't work", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(JSONRequest);
     }
 
     public Company getCompany()
