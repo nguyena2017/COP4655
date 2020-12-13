@@ -13,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.Response;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -37,8 +38,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     public GoogleSignInAccount account;
     String ACCESS_TOKEN = "ma4Uvju8RyzHlMDuVvqdxooupxz7_IkhbKpEek9HAzcGvu868nQhbkkDi_kk-FUb9_aWodrCEUJg-XiAPsTRYGTbmug2yhI0f0bBHwX7FnFBOoldEukhvNR75QzUX3Yx";
     Company company = new Company();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,15 +152,12 @@ public class MainActivity extends AppCompatActivity {
     public void search(String location)
     {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String YourUrl = "https://api.yelp.com/v3/businesses/search?location="+location;
+        String YourUrl = "https://api.yelp.com/v3/businesses/search?location="+location + "+term=";
         Log.d(TAG, YourUrl);
-        final StringRequest request = new StringRequest(Request.Method.GET, YourUrl, new Response.Listener<String>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, YourUrl, null, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
-                Log.d(TAG, response);
-                System.out.println(response);
-                company.add(response);
-                company = getCompany();
+            public void onResponse(JSONObject response) {
+                company.add(response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -182,4 +181,5 @@ public class MainActivity extends AppCompatActivity {
     {
         return company;
     }
+
 }

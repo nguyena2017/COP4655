@@ -17,6 +17,7 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
     Context context;
     ArrayList<String> nameList;
     ArrayList<String> addressList;
+    ArrayList<String> cityList;
     ArrayList<String> phoneList;
     ArrayList<String> closedList;
     ArrayList<String> distanceList;
@@ -31,6 +32,7 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
         TextView rowClosed;
         TextView rowDistance;
         TextView rowRating;
+        TextView rowCity;
         public ViewHolder (@NonNull View itemView)
         {
             super(itemView);
@@ -40,12 +42,13 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
             rowClosed = itemView.findViewById(R.id.open);
             rowDistance = itemView.findViewById(R.id.distance);
             rowRating = itemView.findViewById(R.id.rating);
+            rowCity = itemView.findViewById(R.id.city);
         }
     }
 
     public ProgramAdapter(Context context, ArrayList<String> nameList , ArrayList<String> addressList,
                           ArrayList<String> phoneList, ArrayList<String> closedList, ArrayList<String> distanceList,
-                          ArrayList<String> ratingList)
+                          ArrayList<String> ratingList, ArrayList<String> cityList)
     {
         this.context = context;
         this.nameList = nameList;
@@ -54,6 +57,7 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
         this.closedList = closedList;
         this.distanceList = distanceList;
         this.ratingList = ratingList;
+        this.cityList = cityList;
     }
 
     @NonNull
@@ -75,6 +79,7 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
         holder.rowClosed.setText(closedList.get(position));
         holder.rowDistance.setText(distanceList.get(position));
         holder.rowRating.setText(ratingList.get(position));
+        holder.rowCity.setText(cityList.get(position));
     }
 
     @Override

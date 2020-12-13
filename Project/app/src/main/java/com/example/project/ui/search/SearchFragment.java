@@ -1,5 +1,6 @@
 package com.example.project.ui.search;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class SearchFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     ArrayList<String> name = new ArrayList<String>();
     ArrayList<String> address = new ArrayList<String>();
+    ArrayList<String> city = new ArrayList<>();
     ArrayList<String> phone = new ArrayList<String>();
     ArrayList<String> is_closed = new ArrayList<String>();
     ArrayList<String> distance = new ArrayList<String>();
@@ -58,22 +60,22 @@ public class SearchFragment extends Fragment {
                 MainActivity main = (MainActivity) getActivity();
                 main.search(location);
                 Company company = main.getCompany();
-                while (company == null)
-                {
-                    company = main.getCompany();
+                while(company == null) {
+                    Log.d(TAG, "response");
                 }
                 name = company.name;
                 address = company.address;
+                city = company.city;
                 phone = company.phone;
                 is_closed = company.is_closed;
                 distance = company.distance;
                 rating = company.rating;
-
-                recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone, is_closed, distance, rating);
+                recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);
                 recyclerView.setAdapter(recycleAdapter);
             }
-
         });
+        //recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);
+        //recyclerView.setAdapter(recycleAdapter);
         return root;
     }
 }
