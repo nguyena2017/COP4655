@@ -26,6 +26,10 @@ public class Company
         this.name.clear();
         this.address.clear();
         this.phone.clear();
+        this.rating.clear();
+        this.is_closed.clear();
+        this.distance.clear();
+        this.city.clear();
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(response);
@@ -40,7 +44,7 @@ public class Company
                 this.city.add(location.getString("city") + ", " + location.getString("state")
                         + " " + location.getString("zip_code"));
                 this.phone.add(business.getString("phone"));
-
+                System.out.println(business.get("phone"));
                 if(business.getBoolean("is_closed"))
                 {
                     this.is_closed.add("Open");

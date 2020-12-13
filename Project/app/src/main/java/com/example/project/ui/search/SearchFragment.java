@@ -12,7 +12,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +33,7 @@ public class SearchFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.Adapter recycleAdapter;
     RecyclerView.LayoutManager layoutManager;
+
     ArrayList<String> name = new ArrayList<String>();
     ArrayList<String> address = new ArrayList<String>();
     ArrayList<String> city = new ArrayList<>();
@@ -39,9 +43,16 @@ public class SearchFragment extends Fragment {
     ArrayList<String> rating = new ArrayList<String>();
     String TAG = "SearchFragment";
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    LayoutInflater inflater;
+    ViewGroup container;
+    Bundle savedInstanceState;
+
+    public View onCreateView(@NonNull final LayoutInflater inflater,
+                             final ViewGroup container, final Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_search, container, false);
+        this.inflater = inflater;
+        this.container = container;
+        this.savedInstanceState = savedInstanceState;
 
         recyclerView = root.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
@@ -52,6 +63,19 @@ public class SearchFragment extends Fragment {
         Button location_button = root.findViewById(R.id.location_button);
         Button gps_button = root.findViewById(R.id.gps_button);
 
+        MainActivity main = (MainActivity) getActivity();
+        Company company = main.getCompany();
+        name = company.name;
+        address = company.address;
+        city = company.city;
+        phone = company.phone;
+        is_closed = company.is_closed;
+        distance = company.distance;
+        rating = company.rating;
+        Log.d(TAG, "message");
+
+        recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);
+        recyclerView.setAdapter(recycleAdapter);
         location_button.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
@@ -61,9 +85,6 @@ public class SearchFragment extends Fragment {
                 MainActivity main = (MainActivity) getActivity();
                 main.search(location);
                 Company company = main.getCompany();
-                recycleAdapter = new ProgramAdapter(getActivity(), company.name, company.address,
-                        company.phone, company.is_closed, company.distance, company.rating, company.city);
-                recyclerView.setAdapter(recycleAdapter);
             }
         });
 
@@ -76,13 +97,11 @@ public class SearchFragment extends Fragment {
                 MainActivity main = (MainActivity) getActivity();
                 main.GPS();
                 Company company = main.getCompany();
-                recycleAdapter = new ProgramAdapter(getActivity(), company.name, company.address,
-                        company.phone, company.is_closed, company.distance, company.rating, company.city);
+                recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);
                 recyclerView.setAdapter(recycleAdapter);
             }
         });
-        //recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);
-        //recyclerView.setAdapter(recycleAdapter);
+
         return root;
     }
 }
