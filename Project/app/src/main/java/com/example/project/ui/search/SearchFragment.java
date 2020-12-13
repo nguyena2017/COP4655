@@ -32,6 +32,9 @@ public class SearchFragment extends Fragment {
     ArrayList<String> name = new ArrayList<String>();
     ArrayList<String> address = new ArrayList<String>();
     ArrayList<String> phone = new ArrayList<String>();
+    ArrayList<String> is_closed = new ArrayList<String>();
+    ArrayList<String> distance = new ArrayList<String>();
+    ArrayList<String> rating = new ArrayList<String>();
     String TAG = "SearchFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -59,8 +62,11 @@ public class SearchFragment extends Fragment {
                 name = company.name;
                 address = company.address;
                 phone = company.phone;
+                is_closed = company.is_closed;
+                distance = company.distance;
+                rating = company.rating;
 
-                recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone);
+                recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone, is_closed, distance, rating);
                 recyclerView.setAdapter(recycleAdapter);
             }
 

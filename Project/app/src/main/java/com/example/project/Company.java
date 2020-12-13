@@ -13,8 +13,9 @@ public class Company
     public ArrayList<String> address = new ArrayList<String>();
     public ArrayList<String> phone = new ArrayList<String>();
     public ArrayList<String> image_url;
-    public ArrayList<String> is_closed;
-    public ArrayList<String> distance;
+    public ArrayList<String> rating = new ArrayList<String>();
+    public ArrayList<String> is_closed = new ArrayList<String>();
+    public ArrayList<String> distance = new ArrayList<String>();
     public ArrayList<Double> latitude;
     public ArrayList<Double> longitude;
 
@@ -36,7 +37,8 @@ public class Company
                 this.name.add(business.getString("name"));
                 this.address.add(location.getString("address1"));
                 this.phone.add(business.getString("phone"));
-                if(business.getBoolean("is_closed"))
+                boolean closed = business.getBoolean("is_closed");
+                if(closed)
                 {
                     this.is_closed.add("Closed");
                 }
@@ -46,6 +48,8 @@ public class Company
                 }
                 double distance = business.getDouble("distance");
                 this.distance.add(Double.toString(distance) + "m");
+                double rating = business.getDouble("rating");
+                this.rating.add(Double.toString(rating) + "/5");
             }
         }
         catch (JSONException e)

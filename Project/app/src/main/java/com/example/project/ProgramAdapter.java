@@ -18,26 +18,42 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
     ArrayList<String> nameList;
     ArrayList<String> addressList;
     ArrayList<String> phoneList;
+    ArrayList<String> closedList;
+    ArrayList<String> distanceList;
+    ArrayList<String> ratingList;
+
+
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
         TextView rowName;
         TextView rowAddress;
         TextView rowPhone;
+        TextView rowClosed;
+        TextView rowDistance;
+        TextView rowRating;
         public ViewHolder (@NonNull View itemView)
         {
             super(itemView);
             rowName = itemView.findViewById(R.id.name);
             rowAddress = itemView.findViewById(R.id.address);
             rowPhone = itemView.findViewById(R.id.phone);
+            rowClosed = itemView.findViewById(R.id.open);
+            rowDistance = itemView.findViewById(R.id.distance);
+            rowRating = itemView.findViewById(R.id.rating);
         }
     }
 
-    public ProgramAdapter(Context context, ArrayList<String> nameList , ArrayList<String> addressList, ArrayList<String> phoneList)
+    public ProgramAdapter(Context context, ArrayList<String> nameList , ArrayList<String> addressList,
+                          ArrayList<String> phoneList, ArrayList<String> closedList, ArrayList<String> distanceList,
+                          ArrayList<String> ratingList)
     {
         this.context = context;
         this.nameList = nameList;
         this.addressList = addressList;
         this.phoneList = phoneList;
+        this.closedList = closedList;
+        this.distanceList = distanceList;
+        this.ratingList = ratingList;
     }
 
     @NonNull
@@ -56,6 +72,9 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
         holder.rowName.setText(nameList.get(position));
         holder.rowAddress.setText(addressList.get(position));
         holder.rowPhone.setText(phoneList.get(position));
+        holder.rowClosed.setText(closedList.get(position));
+        holder.rowDistance.setText(distanceList.get(position));
+        holder.rowRating.setText(ratingList.get(position));
     }
 
     @Override
