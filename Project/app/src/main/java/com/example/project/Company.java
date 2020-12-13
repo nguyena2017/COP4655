@@ -29,7 +29,7 @@ public class Company
         try {
             jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("businesses");
-            for(int i = 0; i < 5; i++)
+            for(int i = 0; i < jsonObject.getInt("total"); i++)
             {
                 JSONObject business = jsonArray.getJSONObject(i);
                 JSONObject location = business.getJSONObject("location");
@@ -40,11 +40,11 @@ public class Company
                 boolean closed = business.getBoolean("is_closed");
                 if(closed)
                 {
-                    this.is_closed.add("Closed");
+                    this.is_closed.add("Open");
                 }
                 else
                 {
-                    this.is_closed.add("Open");
+                    this.is_closed.add("Closed");
                 }
                 double distance = business.getDouble("distance");
                 this.distance.add(Double.toString(distance) + "m");

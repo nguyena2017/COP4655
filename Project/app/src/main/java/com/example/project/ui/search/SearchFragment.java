@@ -58,7 +58,10 @@ public class SearchFragment extends Fragment {
                 MainActivity main = (MainActivity) getActivity();
                 main.search(location);
                 Company company = main.getCompany();
-
+                while (company == null)
+                {
+                    company = main.getCompany();
+                }
                 name = company.name;
                 address = company.address;
                 phone = company.phone;
