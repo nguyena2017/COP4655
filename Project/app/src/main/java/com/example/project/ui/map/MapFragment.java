@@ -50,6 +50,10 @@ public class MapFragment extends Fragment {
         TextView address = root.findViewById(R.id.mapAddress);
         TextView city = root.findViewById(R.id.mapCity);
 
+        if(company.name.size() == 0)
+        {
+            return root;
+        }
         name.setText(company.name.get(0));
         phone.setText(company.phone.get(0));
         address.setText(company.address.get(0));

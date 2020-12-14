@@ -14,13 +14,13 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.project.ui.search.SearchFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.project.ui.map.MapFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_map"
         tools:layout="@layout/fragment_map" />
 
     <fragment
