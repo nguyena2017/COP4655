@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content">
 
     <TextView
@@ -8,13 +9,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:layout_weight="1"
         android:text="Company here"
         android:textSize="20dp"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/trash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trash"/>
-
+        app:srcCompat="@drawable/ic_baseline_restore_from_trash_24" />
 </LinearLayout>
