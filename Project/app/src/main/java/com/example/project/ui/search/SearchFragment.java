@@ -1,6 +1,5 @@
 package com.example.project.ui.search;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,22 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.Company;
 import com.example.project.MainActivity;
-import com.example.project.ProgramAdapter;
+import com.example.project.CompanyAdapter;
 import com.example.project.R;
 import com.example.project.VolleyCallBack;
 
@@ -49,7 +42,6 @@ public class SearchFragment extends Fragment {
                              final ViewGroup container, final Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_search, container, false);
 
-
         recyclerView = root.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -70,7 +62,7 @@ public class SearchFragment extends Fragment {
         rating = company.rating;
         Log.d(TAG, "message");
 
-        recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);
+        recycleAdapter = new CompanyAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);
         recyclerView.setAdapter(recycleAdapter);
         location_button.setOnClickListener(new View.OnClickListener()
         {
@@ -84,7 +76,6 @@ public class SearchFragment extends Fragment {
                     public void onSuccess()
                     {
                         Company company = main.getCompany();
-                        Log.d(TAG, "Testing success");
                         refresh(company);
                     }
                 });
@@ -102,7 +93,6 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         Company company = main.getCompany();
-                        Log.d(TAG, "Testing success");
                         refresh(company);
                     }
                 });
@@ -124,7 +114,6 @@ public class SearchFragment extends Fragment {
         is_closed = company.is_closed;
         distance = company.distance;
         rating = company.rating;
-        Log.d(TAG, "in Refresh");
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }

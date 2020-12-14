@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHolder>
+public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ViewHolder>
 {
 
     Context context;
@@ -46,7 +46,7 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
         }
     }
 
-    public ProgramAdapter(Context context, ArrayList<String> nameList , ArrayList<String> addressList,
+    public CompanyAdapter(Context context, ArrayList<String> nameList , ArrayList<String> addressList,
                           ArrayList<String> phoneList, ArrayList<String> closedList, ArrayList<String> distanceList,
                           ArrayList<String> ratingList, ArrayList<String> cityList)
     {
@@ -62,16 +62,16 @@ public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHold
 
     @NonNull
     @Override
-    public ProgramAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    public CompanyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.single_item, parent, false);
+        View view = inflater.inflate(R.layout.company, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProgramAdapter.ViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull CompanyAdapter.ViewHolder holder, int position)
     {
         holder.rowName.setText(nameList.get(position));
         holder.rowAddress.setText(addressList.get(position));

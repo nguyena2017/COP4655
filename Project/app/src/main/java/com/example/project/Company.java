@@ -17,8 +17,8 @@ public class Company
     public ArrayList<String> rating = new ArrayList<String>();
     public ArrayList<String> is_closed = new ArrayList<String>();
     public ArrayList<String> distance = new ArrayList<String>();
-    public ArrayList<Double> latitude;
-    public ArrayList<Double> longitude;
+    public ArrayList<Double> latitude = new ArrayList<Double>();
+    public ArrayList<Double> longitude = new ArrayList<Double>();
 
     public void add(String response)
     {
@@ -30,6 +30,9 @@ public class Company
         this.is_closed.clear();
         this.distance.clear();
         this.city.clear();
+        this.longitude.clear();
+        this.latitude.clear();
+
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(response);
@@ -38,13 +41,13 @@ public class Company
             {
                 JSONObject business = jsonArray.getJSONObject(i);
                 JSONObject location = business.getJSONObject("location");
+                JSONObject coordinates = business.getJSONObject("coordinates");
                 this.id.add(business.getString("id"));
                 this.name.add(business.getString("name"));
                 this.address.add(location.getString("address1") + ",");
                 this.city.add(location.getString("city") + ", " + location.getString("state")
                         + " " + location.getString("zip_code"));
                 this.phone.add(business.getString("phone"));
-                System.out.println(business.get("phone"));
                 if(business.getBoolean("is_closed"))
                 {
                     this.is_closed.add("Open");
@@ -57,6 +60,8 @@ public class Company
                 this.distance.add(Double.toString(distance) + "m");
                 double rating = business.getDouble("rating");
                 this.rating.add("Rating: " + Double.toString(rating) + "/5");
+                this.latitude.add(coordinates.getDouble("latitude"));
+                this.longitude.add(coordinates.getDouble("longitude"));
             }
         }
         catch (JSONException e)

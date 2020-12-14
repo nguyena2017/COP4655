@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 import com.example.project.Company;
 import com.example.project.MainActivity;
@@ -29,8 +31,8 @@ public class MapFragment extends Fragment {
 
     private GoogleMap googleMap;
     private MapView mMapView;
-    private double latitude = -80;
-    private double longitude = 26;
+    private double latitude;
+    private double longitude;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +41,19 @@ public class MapFragment extends Fragment {
         mMapView = (MapView) root.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
+
+        MainActivity main = (MainActivity) getActivity();
+        Company company = main.getCompany();
+
+        TextView name = root.findViewById(R.id.mapName);
+        TextView phone = root.findViewById(R.id.mapPhone);
+        TextView address = root.findViewById(R.id.mapAddress);
+        TextView city = root.findViewById(R.id.mapCity);
+
+        name.setText(company.name.get(0));
+        phone.setText(company.phone.get(0));
+        address.setText(company.address.get(0));
+        city.setText(company.city.get(0));
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -51,7 +66,12 @@ public class MapFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap mMap) {
 
+                MainActivity main = (MainActivity) getActivity();
                 googleMap = mMap;
+                Company company = main.getCompany();
+
+                latitude = company.latitude.get(0);
+                longitude = company.longitude.get(0);
 
                 // For dropping a marker at a point on the Map
                 LatLng location = new LatLng(latitude, longitude);
