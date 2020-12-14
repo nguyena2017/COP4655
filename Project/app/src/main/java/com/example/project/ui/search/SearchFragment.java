@@ -1,11 +1,9 @@
 package com.example.project.ui.search;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -34,28 +32,38 @@ public class SearchFragment extends Fragment {
     ArrayList<String> city = new ArrayList<>();
     ArrayList<String> phone = new ArrayList<String>();
     ArrayList<String> is_closed = new ArrayList<String>();
-    ArrayList<String> distance = new ArrayList<String>();
     ArrayList<String> rating = new ArrayList<String>();
-    String TAG = "SearchFragment";
+    ArrayList<String> image_url = new ArrayList<String>();
 
 
     public View onCreateView(@NonNull final LayoutInflater inflater,
                              final ViewGroup container, final Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_search, container, false);
 
+        // Get the recycler View from the id
         recyclerView = root.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
+        //Get the EditText and ImageButton from the id
         final EditText search = root.findViewById(R.id.search);
         final EditText term = root.findViewById(R.id.term);
         ImageButton location_button = root.findViewById(R.id.location_button);
         ImageButton gps_button = root.findViewById(R.id.gps_button);
 
-        Log.d(TAG, "message");
 
-        recycleAdapter = new CompanyAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);
+        MainActivity main = (MainActivity) getActivity();
+        Company company = main.getCompany();
+        name = company.name;
+        address = company.address;
+        city = company.city;
+        phone = company.phone;
+        is_closed = company.is_closed;
+        rating = company.rating;
+        image_url = company.image_url;
+
+        recycleAdapter = new CompanyAdapter(getActivity(), name, address, phone, is_closed, rating, city, image_url);
         recyclerView.setAdapter(recycleAdapter);
         location_button.setOnClickListener(new View.OnClickListener()
         {
@@ -65,7 +73,8 @@ public class SearchFragment extends Fragment {
                 String location = search.getText().toString();
                 String category = term.getText().toString();
                 final MainActivity main = (MainActivity) getActivity();
-                main.search(location, category, new VolleyCallBack() {
+                main.search(location, category, new VolleyCallBack()
+                {
                     @Override
                     public void onSuccess()
                     {
@@ -99,14 +108,13 @@ public class SearchFragment extends Fragment {
 
     public void refresh(Company company)
     {
-        MainActivity main = (MainActivity) getActivity();
         name = company.name;
         address = company.address;
         city = company.city;
         phone = company.phone;
         is_closed = company.is_closed;
-        distance = company.distance;
         rating = company.rating;
+        image_url = company.image_url;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }

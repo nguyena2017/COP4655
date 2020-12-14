@@ -21,6 +21,7 @@ import com.example.project.FavoriteAdapter;
 import com.example.project.MainActivity;
 import com.example.project.R;
 
+
 import java.util.ArrayList;
 
 public class FavoriteFragment extends Fragment {
@@ -28,7 +29,6 @@ public class FavoriteFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.Adapter recycleAdapter;
     RecyclerView.LayoutManager layoutManager;
-
     ArrayList<String> company;
 
     public View onCreateView(@NonNull LayoutInflater inflater,

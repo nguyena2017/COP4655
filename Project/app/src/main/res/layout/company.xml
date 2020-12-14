@@ -4,10 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content">
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Picture here"
         android:textSize="20dp"
         android:layout_margin="5dp"
         android:id="@+id/picture"/>
@@ -20,13 +19,14 @@
             android:layout_height="wrap_content"
             android:text="Name"
             android:textSize="20dp"
-            android:layout_marginTop="7dp"
+            android:textColor="#000"
             android:id="@+id/name"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rating"
             android:textSize="20dp"
+            android:textColor="#000"
             android:id="@+id/rating"/>
 
         <TextView
@@ -34,20 +34,23 @@
             android:layout_height="wrap_content"
             android:text="Phone"
             android:textSize="20dp"
+            android:textColor="#000"
             android:id="@+id/phone"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"
+            android:text="Address"
             android:textSize="20dp"
+            android:textColor="#000"
             android:id="@+id/address"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"
+            android:text="City"
             android:textSize="20dp"
+            android:textColor="#000"
             android:id="@+id/city"/>
 
         <TextView
@@ -55,19 +58,14 @@
             android:layout_height="wrap_content"
             android:text="Open"
             android:textSize="20dp"
+            android:textColor="#000"
             android:id="@+id/open"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Distance"
-            android:textSize="20dp"
-            android:id="@+id/distance"/>
 
         <ImageButton
             android:id="@+id/favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
             app:srcCompat="@drawable/ic_baseline_favorite_border_24"/>
 
 

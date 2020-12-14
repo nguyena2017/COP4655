@@ -37,6 +37,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,20 +59,16 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity
 {
 
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
     private static String TAG = "MainActivity";
     private static int RC_SIGN_IN = 1;
-    public GoogleSignInClient mGoogleSignInClient;
-    public GoogleSignInAccount account;
     String ACCESS_TOKEN = "ma4Uvju8RyzHlMDuVvqdxooupxz7_IkhbKpEek9HAzcGvu868nQhbkkDi_kk-FUb9_aWodrCEUJg-XiAPsTRYGTbmug2yhI0f0bBHwX7FnFBOoldEukhvNR75QzUX3Yx";
     Company company = new Company();
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final int REQUEST_CODE_PERMISSION = 2;
     GPSTracker gps;
+    public String passing;
 
-
-
+    // Create the Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,91 +77,20 @@ public class MainActivity extends AppCompatActivity
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_favorite)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        // ...
-        // Initialize Firebase Auth
-
-    }
-    public void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignResult(task);
-        }
-    }
-
-    private void handleSignResult(Task<GoogleSignInAccount> task)
+    public void pass(String item)
     {
-        try {
-            // Google Sign In was successful, authenticate with Firebase
-            GoogleSignInAccount account = task.getResult(ApiException.class);
-            Toast.makeText(MainActivity.this, "Signed in Successfully", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-            firebaseAuthWithGoogle(account.getIdToken());
-        } catch (ApiException e) {
-            // Google Sign In failed, update UI appropriately
-            Log.d(TAG, "Google sign in failed", e);
-            Toast.makeText(MainActivity.this, "Signed in Failed", Toast.LENGTH_SHORT).show();
-            firebaseAuthWithGoogle(null);
-        }
+        passing = item;
     }
 
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            Toast.makeText(MainActivity.this, "Signed in with credential Success", Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Signed in with credential Failed", Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-                    }
-                });
-    }
-
-    private void updateUI(FirebaseUser user)
-    {
-        account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        if(account != null)
-        {
-            String name = account.getDisplayName();
-            //mDatabase.child().child("favorite").setValue("you suck");
-            Toast.makeText(MainActivity.this, name, Toast.LENGTH_SHORT).show();
-        }
-    }
-
+    // Search the Yelp API using the city and terms
     public void search(String location, String term, final VolleyCallBack callBack)
     {
         if(location.equals("") || term.equals(""))
@@ -172,7 +99,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String URL = "https://api.yelp.com/v3/businesses/search?location="+location + "+term=" + term;
+        String URL = "https://api.yelp.com/v3/businesses/search?location="+location + "&term=" + term;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -197,6 +124,7 @@ public class MainActivity extends AppCompatActivity
         queue.add(request);
     }
 
+    // Search the Yelp API using the GPS button
     public void GPS(String term, final VolleyCallBack callBack)
     {
         // Checks to see if user gives permission to use their location
@@ -253,6 +181,7 @@ public class MainActivity extends AppCompatActivity
         queue.add(JSONRequest);
     }
 
+    // Returns the company
     public Company getCompany()
     {
         return company;

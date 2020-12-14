@@ -13,10 +13,9 @@ public class Company
     public ArrayList<String> address = new ArrayList<String>();
     public ArrayList<String> city = new ArrayList<>();
     public ArrayList<String> phone = new ArrayList<String>();
-    public ArrayList<String> image_url;
+    public ArrayList<String> image_url = new ArrayList<>();
     public ArrayList<String> rating = new ArrayList<String>();
     public ArrayList<String> is_closed = new ArrayList<String>();
-    public ArrayList<String> distance = new ArrayList<String>();
     public ArrayList<Double> latitude = new ArrayList<Double>();
     public ArrayList<Double> longitude = new ArrayList<Double>();
 
@@ -28,10 +27,10 @@ public class Company
         this.phone.clear();
         this.rating.clear();
         this.is_closed.clear();
-        this.distance.clear();
         this.city.clear();
         this.longitude.clear();
         this.latitude.clear();
+        this.image_url.clear();
 
         JSONObject jsonObject = null;
         try {
@@ -50,18 +49,18 @@ public class Company
                 this.phone.add(business.getString("phone"));
                 if(business.getBoolean("is_closed"))
                 {
-                    this.is_closed.add("Open");
+                    this.is_closed.add("Closed");
                 }
                 else
                 {
-                    this.is_closed.add("Closed");
+                    this.is_closed.add("Open");
                 }
                 double distance = business.getDouble("distance");
-                this.distance.add(Double.toString(distance) + "m");
                 double rating = business.getDouble("rating");
                 this.rating.add("Rating: " + Double.toString(rating) + "/5");
                 this.latitude.add(coordinates.getDouble("latitude"));
                 this.longitude.add(coordinates.getDouble("longitude"));
+                this.image_url.add(business.getString("image_url"));
             }
         }
         catch (JSONException e)
