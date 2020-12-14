@@ -1,9 +1,11 @@
 package com.example.project;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,26 +26,23 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ViewHold
     ArrayList<String> ratingList;
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
+    @Override
+    public void onBindViewHolder(@NonNull CompanyAdapter.ViewHolder holder, final int position)
     {
-        TextView rowName;
-        TextView rowAddress;
-        TextView rowPhone;
-        TextView rowClosed;
-        TextView rowDistance;
-        TextView rowRating;
-        TextView rowCity;
-        public ViewHolder (@NonNull View itemView)
-        {
-            super(itemView);
-            rowName = itemView.findViewById(R.id.name);
-            rowAddress = itemView.findViewById(R.id.address);
-            rowPhone = itemView.findViewById(R.id.phone);
-            rowClosed = itemView.findViewById(R.id.open);
-            rowDistance = itemView.findViewById(R.id.distance);
-            rowRating = itemView.findViewById(R.id.rating);
-            rowCity = itemView.findViewById(R.id.city);
-        }
+        holder.rowName.setText(nameList.get(position));
+        holder.rowAddress.setText(addressList.get(position));
+        holder.rowPhone.setText(phoneList.get(position));
+        holder.rowClosed.setText(closedList.get(position));
+        holder.rowDistance.setText(distanceList.get(position));
+        holder.rowRating.setText(ratingList.get(position));
+        holder.rowCity.setText(cityList.get(position));
+        holder.favorite.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Favorite favorite = Favorite.getInstance();
+                String theRemovedItem = nameList.get(position);
+                favorite.add(theRemovedItem);
+            }
+        });
     }
 
     public CompanyAdapter(Context context, ArrayList<String> nameList , ArrayList<String> addressList,
@@ -70,16 +69,28 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ViewHold
         return viewHolder;
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull CompanyAdapter.ViewHolder holder, int position)
+    public static class ViewHolder extends RecyclerView.ViewHolder
     {
-        holder.rowName.setText(nameList.get(position));
-        holder.rowAddress.setText(addressList.get(position));
-        holder.rowPhone.setText(phoneList.get(position));
-        holder.rowClosed.setText(closedList.get(position));
-        holder.rowDistance.setText(distanceList.get(position));
-        holder.rowRating.setText(ratingList.get(position));
-        holder.rowCity.setText(cityList.get(position));
+        TextView rowName;
+        TextView rowAddress;
+        TextView rowPhone;
+        TextView rowClosed;
+        TextView rowDistance;
+        TextView rowRating;
+        TextView rowCity;
+        ImageButton favorite;
+        public ViewHolder (@NonNull View itemView)
+        {
+            super(itemView);
+            rowName = itemView.findViewById(R.id.name);
+            rowAddress = itemView.findViewById(R.id.address);
+            rowPhone = itemView.findViewById(R.id.phone);
+            rowClosed = itemView.findViewById(R.id.open);
+            rowDistance = itemView.findViewById(R.id.distance);
+            rowRating = itemView.findViewById(R.id.rating);
+            rowCity = itemView.findViewById(R.id.city);
+            favorite = itemView.findViewById(R.id.favorite);
+        }
     }
 
     @Override

@@ -35,6 +35,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity
 {
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
     private static String TAG = "MainActivity";
     private static int RC_SIGN_IN = 1;
     public GoogleSignInClient mGoogleSignInClient;
@@ -83,6 +86,7 @@ public class MainActivity extends AppCompatActivity
         NavigationUI.setupWithNavController(navView, navController);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -155,6 +159,7 @@ public class MainActivity extends AppCompatActivity
         if(account != null)
         {
             String name = account.getDisplayName();
+            //mDatabase.child().child("favorite").setValue("you suck");
             Toast.makeText(MainActivity.this, name, Toast.LENGTH_SHORT).show();
         }
     }

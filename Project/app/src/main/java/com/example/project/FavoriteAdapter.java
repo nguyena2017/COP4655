@@ -42,6 +42,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                 String theRemovedItem = companyList.get(position);
                 companyList.remove(position);  // remove the item from list
                 notifyItemRemoved(position); // notify the adapter about the removed item
+                notifyDataSetChanged();
             }
         });
     }

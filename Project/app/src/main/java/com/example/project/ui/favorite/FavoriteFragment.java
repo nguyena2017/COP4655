@@ -14,8 +14,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.project.Company;
 import com.example.project.CompanyAdapter;
+import com.example.project.Favorite;
 import com.example.project.FavoriteAdapter;
+import com.example.project.MainActivity;
 import com.example.project.R;
 
 import java.util.ArrayList;
@@ -26,14 +29,15 @@ public class FavoriteFragment extends Fragment {
     RecyclerView.Adapter recycleAdapter;
     RecyclerView.LayoutManager layoutManager;
 
-    ArrayList<String> company = new ArrayList<>();
+    ArrayList<String> company;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_favorite, container, false);
-        company.add("Wendy's");
-        company.add("Chicken Nugget");
-
+        MainActivity main = (MainActivity) getActivity();
+        Company test = main.getCompany();
+        Favorite object = Favorite.getInstance();
+        company = object.favoriteList;
         recyclerView = root.findViewById(R.id.favorite);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
