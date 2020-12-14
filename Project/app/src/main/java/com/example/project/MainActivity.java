@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.Manifest;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.project.ui.search.SearchFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -37,6 +39,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -49,7 +52,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
 
     private FirebaseAuth mAuth;
     private static String TAG = "MainActivity";
@@ -155,15 +159,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void search(String location)
+    public void search(String location, final VolleyCallBack callBack)
     {
-
         RequestQueue queue = Volley.newRequestQueue(this);
         String URL = "https://api.yelp.com/v3/businesses/search?location="+location + "+term=";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 company.add(response.toString());
+                callBack.onSuccess();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -183,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    public void GPS()
+    public void GPS(final VolleyCallBack callBack)
     {
         // Checks to see if user gives permission to use their location
         try {
@@ -215,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response)
                     {
                         company.add(response.toString());
+                        callBack.onSuccess();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -241,5 +246,4 @@ public class MainActivity extends AppCompatActivity {
     {
         return company;
     }
-
 }

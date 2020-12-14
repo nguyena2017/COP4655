@@ -25,6 +25,7 @@ import com.example.project.Company;
 import com.example.project.MainActivity;
 import com.example.project.ProgramAdapter;
 import com.example.project.R;
+import com.example.project.VolleyCallBack;
 
 import java.util.ArrayList;
 
@@ -43,16 +44,11 @@ public class SearchFragment extends Fragment {
     ArrayList<String> rating = new ArrayList<String>();
     String TAG = "SearchFragment";
 
-    LayoutInflater inflater;
-    ViewGroup container;
-    Bundle savedInstanceState;
 
     public View onCreateView(@NonNull final LayoutInflater inflater,
                              final ViewGroup container, final Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_search, container, false);
-        this.inflater = inflater;
-        this.container = container;
-        this.savedInstanceState = savedInstanceState;
+        final View root = inflater.inflate(R.layout.fragment_search, container, false);
+
 
         recyclerView = root.findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
@@ -82,9 +78,16 @@ public class SearchFragment extends Fragment {
             {
                 //Get the text from the textfield
                 String location = search.getText().toString();
-                MainActivity main = (MainActivity) getActivity();
-                main.search(location);
-                Company company = main.getCompany();
+                final MainActivity main = (MainActivity) getActivity();
+                main.search(location, new VolleyCallBack() {
+                    @Override
+                    public void onSuccess()
+                    {
+                        Company company = main.getCompany();
+                        Log.d(TAG, "Testing success");
+                        refresh(company);
+                    }
+                });
             }
         });
 
@@ -94,14 +97,35 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                MainActivity main = (MainActivity) getActivity();
-                main.GPS();
-                Company company = main.getCompany();
-                recycleAdapter = new ProgramAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);
-                recyclerView.setAdapter(recycleAdapter);
+                final MainActivity main = (MainActivity) getActivity();
+                main.GPS(new VolleyCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        Company company = main.getCompany();
+                        Log.d(TAG, "Testing success");
+                        refresh(company);
+                    }
+                });
+
             }
         });
 
+
         return root;
+    }
+
+    public void refresh(Company company)
+    {
+        MainActivity main = (MainActivity) getActivity();
+        name = company.name;
+        address = company.address;
+        city = company.city;
+        phone = company.phone;
+        is_closed = company.is_closed;
+        distance = company.distance;
+        rating = company.rating;
+        Log.d(TAG, "in Refresh");
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
     }
 }
