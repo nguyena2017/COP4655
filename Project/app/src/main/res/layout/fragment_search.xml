@@ -11,36 +11,53 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="152dp">
 
         <EditText
             android:id="@+id/search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="76dp"
             android:ems="10"
             android:hint="Enter a location"
             android:inputType="textPersonName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/location_button"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="5dp"
-            android:text="Search"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/search" />
+        <EditText
+            android:id="@+id/term"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="Enter a category"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <ImageButton
             android:id="@+id/gps_button"
             android:layout_width="60dp"
             android:layout_height="50dp"
+            android:layout_marginBottom="60dp"
+            android:src="@drawable/ic_baseline_gps_fixed_24"
             android:text="GPS"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/location_button" />
+
+        <ImageButton
+            android:id="@+id/location_button"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="60dp"
+            android:src="@drawable/ic_baseline_search_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/search" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -50,4 +67,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 </LinearLayout>

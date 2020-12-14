@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -48,18 +49,10 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         final EditText search = root.findViewById(R.id.search);
-        Button location_button = root.findViewById(R.id.location_button);
-        Button gps_button = root.findViewById(R.id.gps_button);
+        final EditText term = root.findViewById(R.id.term);
+        ImageButton location_button = root.findViewById(R.id.location_button);
+        ImageButton gps_button = root.findViewById(R.id.gps_button);
 
-        MainActivity main = (MainActivity) getActivity();
-        Company company = main.getCompany();
-        name = company.name;
-        address = company.address;
-        city = company.city;
-        phone = company.phone;
-        is_closed = company.is_closed;
-        distance = company.distance;
-        rating = company.rating;
         Log.d(TAG, "message");
 
         recycleAdapter = new CompanyAdapter(getActivity(), name, address, phone, is_closed, distance, rating, city);
@@ -70,8 +63,9 @@ public class SearchFragment extends Fragment {
             {
                 //Get the text from the textfield
                 String location = search.getText().toString();
+                String category = term.getText().toString();
                 final MainActivity main = (MainActivity) getActivity();
-                main.search(location, new VolleyCallBack() {
+                main.search(location, category, new VolleyCallBack() {
                     @Override
                     public void onSuccess()
                     {
@@ -89,7 +83,8 @@ public class SearchFragment extends Fragment {
             public void onClick(View v)
             {
                 final MainActivity main = (MainActivity) getActivity();
-                main.GPS(new VolleyCallBack() {
+                String category = term.getText().toString();
+                main.GPS(category, new VolleyCallBack() {
                     @Override
                     public void onSuccess() {
                         Company company = main.getCompany();
@@ -99,8 +94,6 @@ public class SearchFragment extends Fragment {
 
             }
         });
-
-
         return root;
     }
 

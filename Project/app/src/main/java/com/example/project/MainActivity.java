@@ -164,10 +164,15 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void search(String location, final VolleyCallBack callBack)
+    public void search(String location, String term, final VolleyCallBack callBack)
     {
+        if(location.equals("") || term.equals(""))
+        {
+            return;
+        }
+
         RequestQueue queue = Volley.newRequestQueue(this);
-        String URL = "https://api.yelp.com/v3/businesses/search?location="+location + "+term=";
+        String URL = "https://api.yelp.com/v3/businesses/search?location="+location + "+term=" + term;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -192,7 +197,7 @@ public class MainActivity extends AppCompatActivity
         queue.add(request);
     }
 
-    public void GPS(final VolleyCallBack callBack)
+    public void GPS(String term, final VolleyCallBack callBack)
     {
         // Checks to see if user gives permission to use their location
         try {
@@ -215,7 +220,8 @@ public class MainActivity extends AppCompatActivity
         RequestQueue queue = Volley.newRequestQueue(this);
 
         // Using GPS coordinates for OpenWeather API
-        String url = "https://api.yelp.com/v3/businesses/search?location=" + Double.toString(latitude) + "," + Double.toString(longitude);
+        String url = "https://api.yelp.com/v3/businesses/search?location=" + Double.toString(latitude) + "," + Double.toString(longitude) +
+                "&term=" + term;
         Log.d(TAG, url);
         // Request a JSONObject response from the provided URL.
         JsonObjectRequest JSONRequest = new JsonObjectRequest(Request.Method.GET, url, null,
