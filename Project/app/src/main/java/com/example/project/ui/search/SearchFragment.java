@@ -35,7 +35,6 @@ public class SearchFragment extends Fragment {
     ArrayList<String> rating = new ArrayList<String>();
     ArrayList<String> image_url = new ArrayList<String>();
 
-
     public View onCreateView(@NonNull final LayoutInflater inflater,
                              final ViewGroup container, final Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_search, container, false);
